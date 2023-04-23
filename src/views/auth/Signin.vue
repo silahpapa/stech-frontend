@@ -49,8 +49,7 @@ export default {
       }else {
         localStorage.setItem('access_token', accessToken)
         this.global.setLoggedInUser(accessToken, response.user)
-        const role = response.user.role
-        window.location.href = '/dashboard'
+        window.location.href = 'dashboard'
       }
       shRepo.showToast('Login was successfully!', 'success')
     }
