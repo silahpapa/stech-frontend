@@ -1,0 +1,47 @@
+<script setup>
+import {useUserStore,ShTable} from '@silahkosgei/sfrontend'
+import {storeToRefs} from 'pinia'
+import {onBeforeMount, ref} from 'vue'
+
+let reload = ref(null)
+onBeforeMount(()=>{
+  reload.value +=1
+})
+let userStore = useUserStore()
+userStore.setUser()
+const {user} = storeToRefs(userStore)
+
+</script>
+<template>
+  <div class="row" >
+    <div class="item col-12 p-3 bg-white">
+      <div class="add col-12">
+        <router-link :to="'pname/store'" class="btn btn-primary me-5">Add uname</router-link>
+      </div>
+      <ShTable :reload="reload" :headers="[tfields]"
+               :end-point="'pname/list/any'"
+               :actions="{
+                    label: 'Action',
+                    actions: [
+                      {
+                         label: 'edit',
+                          icon: 'bi-pencil',
+                         class: 'btn btn-info btn-sm',
+                         path: '/pname/store/{id}',
+                       },
+                       {
+                         label: 'view',
+                         icon: 'bi-eye',
+                         class: 'btn mx-2 btn-warning btn-sm',
+                         path: '/pname/view/{id}',
+                       }
+                    ]
+                  }"
+      ></ShTable>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+
+</style>

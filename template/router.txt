@@ -1,0 +1,27 @@
+import uppercasep from '@/views/core/pname/uppercasep.vue'
+import Store from '@/views/core/pname/model/Store.vue'
+import View from '@/views/core/pname/model/View.vue'
+const routes = [
+    {
+        path: '/pname',
+        component: uppercasep,
+        children: [
+            {
+                path: 'store/:id?',
+                component: Store,
+                meta: {
+                    popup: 'modal',
+                }
+            },
+            {
+                path: 'view/:id',
+                component: View,
+                meta: {
+                    popup: 'canvas',
+                    position:'end'
+                }
+            }
+        ]
+    }
+]
+export default routes

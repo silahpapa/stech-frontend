@@ -1,0 +1,63 @@
+<script setup>
+import {useUserStore,ShTable,ShModal, ShForm,shRepo} from '@silahkosgei/sfrontend'
+import {storeToRefs} from 'pinia'
+import {onBeforeMount, reactive,ref} from 'vue'
+
+let reload = ref(null)
+onBeforeMount(()=>{
+  reload.value +=1
+})
+let userStore = useUserStore()
+userStore.setUser()
+const {user} = storeToRefs(userStore)
+const  pname = ref(null)
+const editBtn = ref(null)
+function editpname (res) {
+  pname.value = null
+  pname.value = res
+  if (pname.value) {
+    editBtn.value.click()
+  }
+}
+const getpname =  () => {
+  return pname.value
+}
+function pnameSaved (res) {
+  reload.value +=1
+  shRepo.showToast('pname record update successfully', 'success')
+}
+</script>
+<template>
+  <div class="row" >
+    <div class="item col-12 p-3 bg-white">
+      <div class="add col-12  me-5 ">
+        <a @click="editpname(null)" href="#pname_modal" data-bs-toggle="modal" class="btn btn-sm btn-primary text-capitalize"><i class="bi-plus-lg"></i> ADD pname</a>
+        <a href="#pname_modal" ref="editBtn" data-bs-toggle="modal" class="d-none"><i class="fa fa-plus"></i> ADD pname</a>
+      </div>
+      <ShTable :reload="reload" :headers="['id','name','description','created_at']"
+               :end-point="'pnames/list/any'"
+               @editpname="editpname"
+               :actions="{
+                    label: 'Action',
+                    actions: [
+                      {
+                         label: 'edit',
+                          icon: 'bi-pencil',
+                         class: 'btn btn-info btn-sm',
+                          type: 'emitter',
+                          emits: 'editpname'
+                       }
+                    ]
+                  }"
+      ></ShTable>
+      <ShModal modal-id="pname_modal" modal-title="pname Form">
+        <ShForm v-if="pname" success-callback="pnameSaved" @pnameSaved="pnameSaved" :current-data="pname" :fields="['name','description']" action="pnames/store"></ShForm>
+        <ShForm v-else success-callback="pnameSaved" @pnameSaved="pnameSaved" :fields="['name','description']" action="pnames/store"></ShForm>
+      </ShModal>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+
+</style>
