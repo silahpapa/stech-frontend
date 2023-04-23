@@ -25,13 +25,11 @@
                     </div>
 </auth-layout>
 </template>
-
 <script>
 import AuthLayout from '@/views/auth/AuthLayout.vue'
 import ShForm from '@/components/ShForm.vue'
 import shRepo from '@/helpers/ShRepo.js'
 const body = document.getElementsByTagName("body")[0];
-import { useRouter } from 'vue-router'
 
 export default {
   name: "signin",
